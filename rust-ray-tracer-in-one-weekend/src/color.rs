@@ -6,6 +6,8 @@ use std::ops::{
     Div,
 };
 
+use crate::rt;
+
 
 // Easy switching between f64 and f32
 // WARN: Make sure the actual type aliased by fsize match between vector.rs and color.rs
@@ -13,7 +15,7 @@ use std::ops::{
 pub type fsize = f64;
 
 #[derive(PartialEq, Debug)]
-pub struct Color3(pub fsize, pub fsize, pub fsize); // Newtype Pattern, Not sure if I like it or not 
+pub struct Color3(pub fsize, pub fsize, pub fsize);
 
 impl Color3 {
     // Self-Methods 
@@ -27,6 +29,13 @@ impl Color3 {
 
     pub fn b(&self) -> fsize {
         self.2
+    }
+
+    pub fn average_samples(&mut self, samples_per_color: usize) {
+        let scale = 1.0 / samples_per_color as f64;
+        self.0 *= scale;
+        self.1 *= scale;
+        self.2 *= scale;
     }
 
     pub fn to_u8(&self) -> (u8, u8, u8) {

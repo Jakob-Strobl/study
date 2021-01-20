@@ -3,6 +3,7 @@ mod color;
 mod ray; 
 mod model;
 mod sphere;
+mod camera;
 
 use std::rc::Rc;
 
@@ -13,11 +14,32 @@ use ray::Ray;
 use model::Hittable;
 
 pub mod rt {
+    use crate::vector;
+
     pub const INFINITY: f64 = f64::INFINITY;
     pub const PI: f64 = std::f64::consts::PI;
 
     pub fn degrees_to_radians(degrees: f64) -> f64 {
         degrees * PI / 180.0
+    }
+
+    pub fn random_double() -> vector::fsize {
+        // Returns a random real in [0, 1)
+        rand::random::<vector::fsize>()
+    }
+
+    pub fn random_double_between(min: vector::fsize, max: vector::fsize) -> vector::fsize {
+        min + (max - min) * random_double()
+    }
+
+    pub fn clamp(value: vector::fsize, min: vector::fsize, max: vector::fsize) -> vector::fsize {
+        if value < min {
+            return min
+        }
+        if value > max {
+            return max
+        }
+        value
     }
 }
 
@@ -43,6 +65,7 @@ pub fn ray_color(ray: &Ray, world: &model::HitList) -> Color3 {
 pub fn render_ppm(image_width: u32) {
     let aspect_ratio = 16.0 / 9.0;
     let image_height = (image_width as f64 / aspect_ratio) as u32;
+    let samples_per_pixel = 25;
 
     // Models
     let sphere = Rc::new(Sphere::new(Vec3(0.0, 0.0, -1.0), 0.5));
@@ -55,16 +78,7 @@ pub fn render_ppm(image_width: u32) {
 
 
     // Camera 
-    let viewport_height = 2.0;
-    let viewport_width = aspect_ratio * viewport_height;
-    let focal_length = 1.0;
-
-
-    let origin = Vec3(0.0, 0.0, 0.0);
-    let horizontal = Vec3(viewport_width, 0.0, 0.0);
-    let vertical = Vec3(0.0, viewport_height, 0.0);
-    let lower_left_corner = &origin - (&horizontal / 2.0) - &vertical / 2.0 - Vec3(0.0, 0.0, focal_length);
-
+    let camera = camera::Camera::new(aspect_ratio);
 
     // Render 
     // PPM Header 
@@ -72,19 +86,23 @@ pub fn render_ppm(image_width: u32) {
     println!("{} {}", image_width, image_height);
     println!("255");
 
+
     // Image 
     for row in (0..image_height).rev() {
         for column in 0..image_width {
-            let horizontal_line = column as f64 / ((image_width - 1) as f64);
-            let vertical_line = row as f64 / ((image_height - 1) as f64);
+            let mut pixel = Color3(0.0, 0.0, 0.0);
 
-            let ray = Ray::new(
-                origin.clone(),
-                &lower_left_corner + horizontal_line * &horizontal + (&(vertical_line * &vertical) - &origin),
-            );
-            let color = ray_color(&ray, &world);
+            for sample in (0..samples_per_pixel) {
+                let horizontal_line = (column as f64 + rt::random_double()) / ((image_width - 1) as f64);
+                let vertical_line = (row as f64 + rt::random_double()) / ((image_height - 1) as f64);
 
-            print!("{} ", color);
+                let ray = camera.get_ray(horizontal_line, vertical_line);
+
+                pixel = pixel + ray_color(&ray, &world)
+            }
+
+            pixel.average_samples(samples_per_pixel);
+            print!("{} ", pixel);
         }
         println!("");
     } 
