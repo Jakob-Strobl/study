@@ -2,7 +2,11 @@
   "name": "padre-ginos",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
     "format": "prettier --write 'src/**/*.{js,jsx,css,html}'",
     "lint": "eslint"
   },
@@ -11,9 +15,15 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "globals": "^15.14.0",
-    "prettier": "3.4.2"
+    "prettier": "3.4.2",
+    "vite": "^6.0.7"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }
