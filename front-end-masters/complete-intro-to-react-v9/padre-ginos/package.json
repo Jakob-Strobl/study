@@ -1,8 +1,9 @@
 {
   "name": "padre-ginos",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/App.js",
   "type": "module",
+  "files": "src/**/*",
   "scripts": {
     "build": "vite build",
     "dev": "vite",
