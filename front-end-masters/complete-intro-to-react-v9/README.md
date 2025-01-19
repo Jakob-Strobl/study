@@ -1,4 +1,5 @@
-This folder contains code I wrote while taking this course
+This folder contains code I wrote while taking this course.  
+(Except for the API. That's provided by the course since it's outside the course's purview)
 
 --- 
 

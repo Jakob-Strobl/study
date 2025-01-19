@@ -18,8 +18,13 @@ const App = () => {
       <Pizza
         name="The Reign Supreme"
         description="The Monarch of Supreme Pizza"
+        image="public/pizzas/ital_supr.webp"
       />
-      <Pizza name="The Grass Is Greener" description="Veggie Lovers Paradise" />
+      <Pizza
+        name="The Grass Is Greener"
+        description="Veggie Lovers Paradise"
+        image="public/pizzas/green_garden.webp"
+      />
     </div>
   );
 };
