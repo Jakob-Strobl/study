@@ -1,14 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Pizza } from "./Pizza";
 
+const intl = new Intl.NumberFormat("en-us", {
+  currency: "USD",
+  style: "currency",
+});
 export default function Order() {
-  // Hardcody
+  // Hardcody - earlier version of course
   // const pizzaType = "pepperoni";
   // const pizzaSize = "M";
   const [pizzaType, setPizzaType] = useState("pepperoni");
   const [pizzaSize, setPizzaSize] = useState("M");
 
   console.log(pizzaType, pizzaSize);
+
+  const [pizzaTypes, setPizzaTypes] = useState([]);
+  const [loading, setLoading] = useState(true); // not my preferred way , but it will work!
+
+  let price, selectedPizza;
+  if (!loading) {
+    selectedPizza = pizzaTypes.find((pizza) => pizzaType === pizza.id);
+  }
+
+  async function fetchPizzaTypes() {
+    const pizzaRes = await fetch("/api/pizzas");
+    const pizzaJson = await pizzaRes.json();
+    setPizzaTypes(pizzaJson);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchPizzaTypes();
+  }, []); // Set empty dependencies so this effect only runs once on load
+
   return (
     <div className="order">
       <h2>Create Order</h2>
@@ -21,9 +45,11 @@ export default function Order() {
               value={pizzaType}
               onChange={(e) => setPizzaType(e.target.value)}
             >
-              <option value="pepperoni">The Pepperoni Pizza</option>
-              <option value="hawaiin">The Hawaiin Pizza</option>
-              <option value="big_meat">The Big Meat Pizza</option>
+              {pizzaTypes.map((pizza) => (
+                <option key={pizza.id} value={pizza.id}>
+                  {pizza.name}
+                </option>
+              ))}
             </select>
           </div>
           <div>
