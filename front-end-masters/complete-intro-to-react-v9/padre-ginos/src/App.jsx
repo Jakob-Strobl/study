@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Pizza } from "./Pizza";
+import Order from "./Order";
 
 // const HardPizza = () => {
 //   // Array to return multiple top-level (sibling components)
@@ -15,6 +16,8 @@ const App = () => {
   return (
     <div>
       <h1>Padre Gino's - Order Now</h1>
+      <Order />
+
       <Pizza
         name="The Reign Supreme"
         description="The Monarch of Supreme Pizza"
