@@ -1,8 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useDebugValue } from "react";
 
 export const usePizzaOfTheDay = () => {
   const [pizzaOfTheDay, setPizzaOfTheDay] = useState(null);
-
+  useDebugValue(
+    pizzaOfTheDay
+      ? `${pizzaOfTheDay.id} : ${pizzaOfTheDay.name}`
+      : "Loading...",
+  );
   useEffect(() => {
     async function fetchPizzaOfTheDay() {
       const response = await fetch("/api/pizza-of-the-day");
@@ -13,5 +17,7 @@ export const usePizzaOfTheDay = () => {
     fetchPizzaOfTheDay();
   }, []);
 
+  // Seeing multiple still work. Has to be all called within the same render. :
+  // useDebugValue("Returning!");
   return pizzaOfTheDay;
 };

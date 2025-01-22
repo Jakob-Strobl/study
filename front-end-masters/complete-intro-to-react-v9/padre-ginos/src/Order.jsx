@@ -94,18 +94,18 @@ export default function Order() {
           </div>
           <button type="submit">Add to Cart</button>
         </div>
-        <div className="order-pizza">
-          {loading ? (
-            <h1>Loading your future pizza</h1>
-          ) : (
+        {loading ? (
+          <h1>Loading your future pizza</h1>
+        ) : (
+          <div className="order-pizza">
             <Pizza
               name={selectedPizza.name}
               description={selectedPizza.description}
               image={selectedPizza.image}
             />
-          )}
-          <p>{price}</p>
-        </div>
+            <p>{price}</p>
+          </div>
+        )}
       </form>
     </div>
   );
