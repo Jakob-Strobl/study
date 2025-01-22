@@ -5,6 +5,7 @@ const intl = new Intl.NumberFormat("en-us", {
   currency: "USD",
   style: "currency",
 });
+
 export default function Order() {
   // Hardcody - earlier version of course
   // const pizzaType = "pepperoni";
