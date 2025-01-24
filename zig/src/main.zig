@@ -1,24 +1,35 @@
 const std = @import("std");
 
 pub fn main() !void {
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
+    const stdout = std.io.getStdOut().writer();
 
-    // stdout is for the actual output of your application, for example if you
-    // are implementing gzip, then only the compressed bytes should be sent to
-    // stdout, not any debugging messages.
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
+    const immutableNegative: i32 = -1;
+    // Cast fails as expected - since u32 doesn't represent negative values
+    // const inferredNegative = @as(u32, immutableNegative);
+    const inferredNegative = @as(i32, immutableNegative);
 
-    try stdout.print("Run `zig build test` to run the tests.\n", .{});
+    // Why did is JS devs get called out in these docs LMAO
+    // @see https://zig.guide/language-basics/assignment
+    var undefinedUnc: i32 = undefined;
+    // Can't use it until assigned
+    // undefinedUnc + 2;
 
-    try bw.flush(); // don't forget to flush!
-}
+    // You can print it, the values look like addresses?
+    // ex: 1807740656, 1871032048, 1860808432, 1869557488
+    try stdout.print("{d}\n", .{undefinedUnc});
+    // It's false - makes sense. The docs say it's
+    try stdout.print("{any}\n", .{undefinedUnc == undefined});
+    try stdout.print("{any}\n", .{undefinedUnc == 2});
 
-test "simple test" {
-    var list = std.ArrayList(i32).init(std.testing.allocator);
-    defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
-    try list.append(42);
-    try std.testing.expectEqual(@as(i32, 42), list.pop());
+    undefinedUnc = 2;
+    try stdout.print("{d}\n", .{undefinedUnc});
+    // It's false - makes sense. The docs say it's
+    try stdout.print("{any}\n", .{undefinedUnc == undefined});
+    try stdout.print("{any}\n", .{undefinedUnc == 2});
+
+    // {d} = decimal
+    // {s} = string
+    // {any} = any - default formatting
+    try stdout.print("immutable boiiiii - {d} {d}\n", .{ immutableNegative, inferredNegative });
+    try stdout.print("Hello, Zig!\n", .{});
 }
