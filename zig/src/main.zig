@@ -1,8 +1,7 @@
 const std = @import("std");
 
+const stdout = std.io.getStdOut().writer();
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
-
     const immutableNegative: i32 = -1;
     // Cast fails as expected - since u32 doesn't represent negative values
     // const inferredNegative = @as(u32, immutableNegative);
@@ -32,4 +31,14 @@ pub fn main() !void {
     // {any} = any - default formatting
     try stdout.print("immutable boiiiii - {d} {d}\n", .{ immutableNegative, inferredNegative });
     try stdout.print("Hello, Zig!\n", .{});
+
+    try arrays();
+}
+
+pub fn arrays() !void {
+    // inferred length for array literals
+    const a = [_]u8{ '2', '1', '3' };
+    const a_length = a.len;
+
+    try stdout.print("[]: {any} | {d}\n", .{ a, a_length });
 }
