@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Pizza } from "./Pizza";
 import Cart from "./Cart";
+import { CartContext } from "./contexts";
 
 const intl = new Intl.NumberFormat("en-us", {
   currency: "USD",
@@ -13,11 +14,9 @@ export default function Order() {
   // const pizzaSize = "M";
   const [pizzaType, setPizzaType] = useState("pepperoni");
   const [pizzaSize, setPizzaSize] = useState("M");
-  const [cart, setCart] = useState([]);
-
-  console.log(pizzaType, pizzaSize);
-
   const [pizzaTypes, setPizzaTypes] = useState([]);
+
+  const [cart, setCart] = useContext(CartContext);
   const [loading, setLoading] = useState(true); // not my preferred way , but it will work!
 
   async function checkout() {
