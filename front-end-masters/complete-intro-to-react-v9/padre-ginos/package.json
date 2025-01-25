@@ -16,6 +16,8 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@tanstack/router-devtools": "^1.97.19",
+    "@tanstack/router-plugin": "^1.97.19",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
@@ -25,6 +27,7 @@
     "vite": "^6.0.7"
   },
   "dependencies": {
+    "@tanstack/react-router": "^1.97.19",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }
