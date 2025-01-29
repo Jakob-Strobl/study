@@ -1,4 +1,3 @@
-import React from "react";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
