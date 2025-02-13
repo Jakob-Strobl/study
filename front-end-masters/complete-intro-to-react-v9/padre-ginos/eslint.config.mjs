@@ -8,7 +8,7 @@ import pluginQuery from "@tanstack/eslint-plugin-query";
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   js.configs.recommended,
-  tseslint.configs.recommended,
+  ...tseslint.configs.recommended,
   {
     ...reactPlugin.configs.flat.recommended,
     settings: {
